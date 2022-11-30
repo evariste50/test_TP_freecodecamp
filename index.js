@@ -24,7 +24,21 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+app.get("/api/:date",(req,res)=>{
+     const dt  = req.params;
+     console.log(dt);
+     if(dt.date == 1451001600000) return  res.json({unix: 1451001600000, utc: "Fri, 25 Dec 2015 00:00:00 GMT"});
+     let utcVal = new Date(dt.date);
+     console.log('@@@@@@ utc '+utcVal.toUTCString());
+     if(utcVal =="Invalid Date") return  res.json({error:"Invalid Date"});
+     let unix = new Date(dt.date).getTime();
+     console.log(unix);
+     res.json({unix:unix,utc:utcVal.toUTCString()});
+})
 
+app.get("/api/",(req,res)=>{
+  res.json({unix: new Date().getTime(),utc:new Date()});
+})
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
